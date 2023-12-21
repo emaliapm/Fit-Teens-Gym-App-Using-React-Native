@@ -13,7 +13,7 @@ import {
     FormControl,
 } from '@gluestack-ui/themed';
 import { useDispatch } from 'react-redux';
-import { setEmail, setUname, setPass } from '../redux/signUpSlice';
+import { setEmail, setUname, setPass } from '../redux/profileSlice';
 import { useNavigation } from '@react-navigation/native';
 
 const signUpScreen = () => {
