@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "fit-teens",
-    "slug": "fit-teens",
+    "name": "dev-todo-app",
+    "slug": "dev-todo-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/task-list.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
