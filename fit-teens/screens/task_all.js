@@ -25,8 +25,7 @@ const TaskScreen = () => {
     useEffect(() => {
         if (nim === '') {
             navigation.navigate("Profile");
-        }
-        dispatch(fetchTasks({ nim, isComplete: "0" }));
+        }        dispatch(fetchTasks({ nim, isComplete: "0" }));
     }, [nim]);
 
     const showToast = () => {

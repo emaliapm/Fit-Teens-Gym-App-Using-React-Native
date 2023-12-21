@@ -1,10 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit';
-import profileSlice from './profileSlice';
+import signUpSlice from './signUpSlice';
 import taskSlice from './taskSlice';
 
 export const store = configureStore({
     reducer: {
-        profile: profileSlice,
+        signUp: signUpSlice,
         task: taskSlice
     },
 });
