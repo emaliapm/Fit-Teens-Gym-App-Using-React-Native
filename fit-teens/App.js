@@ -5,7 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { GluestackUIProvider } from "@gluestack-ui/themed";
 import { config } from "@gluestack-ui/config"
-import { AboutScreen, signUpScreen, TaskAll, TaskCompleted } from './screens';
+import { AboutScreen, LoginScreen, TaskCompletedScreen } from './screens';
 import { store } from './redux/store';
 import { Provider } from 'react-redux';
 
@@ -47,11 +47,11 @@ const BottomNavigator = () => {
         },
       })}
     >
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Task"
         component={TaskScreen}
         options={{ title: 'All Task', unmountOnBlur: true }}
-      />
+      /> */}
       <Tab.Screen
         name="Completed"
         component={TaskCompletedScreen}
@@ -78,8 +78,8 @@ const App = () => {
               options={{ headerShown: false }}
             />
             <Stack.Screen
-              name="signUp"
-              component={signUpScreen}
+              name="Login"
+              component={LoginScreen}
               options={{ headerShown: false }}
             />
           </Stack.Navigator>

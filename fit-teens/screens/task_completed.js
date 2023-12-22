@@ -13,19 +13,27 @@ import { deleteTask, fetchTasks, storeTask, updateTask } from "../redux/taskSlic
 
 const TaskCompletedScreen = () => {
     const dispatch = useDispatch();
-    const { nim, nama } = useSelector((state) => state.profile);
+    const navigation = useNavigation();
+    const { uname, pass } = useSelector((state) => state.login);
     const { data, loading } = useSelector((state) => state.task);
 
     useEffect(() => {
-        dispatch(fetchTasks({ nim, isComplete: "1" }));
+        if (uname === '') {
+            navigation.navigate("Login");
+        }
+        dispatch(fetchTasks({ uname, isComplete: "0" }));
+    }, [uname]);
+
+    useEffect(() => {
+        dispatch(fetchTasks({ uname, isComplete: "1" }));
     }, []);
 
     const handleDeleteTask = async (item, index) => {
-        dispatch(deleteTask({ id: item.id, nim, completed: true }));
+        dispatch(deleteTask({ id: item.id, uname, completed: true }));
     };
 
     const handleStatusChange = async (item, index) => {
-        dispatch(updateTask({ id: item.id, title: item.title, nim, isComplete: false, completed: true }));
+        dispatch(updateTask({ id: item.id, title: item.title, uname, isComplete: false, completed: true }));
     };
 
     const renderItem = ({ item, index }) => (
@@ -56,7 +64,7 @@ const TaskCompletedScreen = () => {
     return (
         <View style={styles.container}>
             <Text style={styles.heading}>Completed Task</Text>
-            <Text style={styles.title}>Selamat Datang {nama}!</Text>
+            <Text style={styles.title}>Selamat Datang {uname}!</Text>
             <FlatList
                 data={data}
                 renderItem={renderItem}

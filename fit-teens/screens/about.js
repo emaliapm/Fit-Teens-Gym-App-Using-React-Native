@@ -13,7 +13,7 @@ import { useSelector } from "react-redux";
 
 const About = () => {
     const navigation = useNavigation();
-    const { nim, nama } = useSelector((state) => state.profile);
+    const { uname, pass } = useSelector((state) => state.login);
 
     return (
         <ScrollView contentContainerStyle={styles.scrollContainer}>
