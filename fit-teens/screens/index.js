@@ -1,5 +1,5 @@
 import AboutScreen from "./about";
 import TaskCompletedScreen from "./task_completed";
-import LoginScreen from "./login";
+import LoginScreen from "./logIn";
 
 export { AboutScreen, TaskCompletedScreen, LoginScreen };

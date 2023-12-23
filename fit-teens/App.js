@@ -58,7 +58,7 @@ const BottomNavigator = () => {
         options={{ unmountOnBlur: true }}
       />
       <Tab.Screen
-        name="About Us"
+        name="About"
         component={AboutScreen}
         options={{ unmountOnBlur: true }}
       />
