@@ -4,19 +4,20 @@ import { View, ScrollView, Image, Text, StyleSheet } from 'react-native';
 
 const articles = [
   {
-    id: 1,
-    title: 'Manfaat Olahraga Rutin',
-    image: require('./assets/olahraga.jpg'),
+    
+    //id: 1,
+    //title: 'Manfaat Olahraga Rutin',
+    //image: require('./assets/olahraga.jpg'),
   },
   {
-    id: 2,
-    title: 'Tips Makan Sehat',
-    image: require('./assets/makan-sehat.jpg'),
+    //id: 2,
+    //title: 'Tips Makan Sehat',
+    //image: require('./assets/makan-sehat.jpg'),
   },
   {
-    id: 3,
-    title: 'Cara Tidur yang Baik',
-    image: require('./assets/tidur.jpg'),
+    //id: 3,
+    //title: 'Cara Tidur yang Baik',
+    //image: require('./assets/tidur.jpg'),
   },
   // Tambahkan artikel lainnya sesuai kebutuhan
 ];
