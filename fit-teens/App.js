@@ -1,13 +1,14 @@
-import { Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { GluestackUIProvider } from "@gluestack-ui/themed";
 import { config } from "@gluestack-ui/config"
-import { AboutScreen, LoginScreen, TaskCompletedScreen } from './screens';
+import { AboutScreen, LoginScreen, TaskCompletedScreen, ArticleScreen } from './screens';
 import { store } from './redux/store';
 import { Provider } from 'react-redux';
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -47,11 +48,11 @@ const BottomNavigator = () => {
         },
       })}
     >
-      {/* <Tab.Screen
-        name="Task"
-        component={TaskScreen}
-        options={{ title: 'All Task', unmountOnBlur: true }}
-      /> */}
+      <Tab.Screen
+        name="article"
+        component={ArticleScreen}
+        options={{  unmountOnBlur: true }}
+      />
       <Tab.Screen
         name="Completed"
         component={TaskCompletedScreen}
@@ -72,6 +73,7 @@ const App = () => {
       <GluestackUIProvider config={config}>
         <NavigationContainer>
           <Stack.Navigator>
+            
             <Stack.Screen
               name="BottomNavigator"
               component={BottomNavigator}
@@ -86,7 +88,16 @@ const App = () => {
         </NavigationContainer>
       </GluestackUIProvider>
     </Provider>
+    
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  }
+})
 
 export default App;
