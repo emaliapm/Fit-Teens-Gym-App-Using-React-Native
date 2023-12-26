@@ -11,23 +11,23 @@ import {
 import { Divider, useToast, Toast, ToastTitle, ToastDescription, VStack } from "@gluestack-ui/themed";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
-import { deleteTask, fetchTasks, storeTask, updateTask } from "../redux/taskSlice";
+import { deleteTask, fetchActivitys, storeTask, updateTask } from "../redux/taskSlice";
 
 const TaskScreen = () => {
     const navigation = useNavigation();
     const toast = useToast();
     const dispatch = useDispatch();
-    const { nim, nama } = useSelector((state) => state.profile);
+    const { uname, nama } = useSelector((state) => state.profile);
     const { data, loading } = useSelector((state) => state.task);
     const [task, setTask] = useState("");
     const [editIndex, setEditIndex] = useState(-1);
 
     useEffect(() => {
-        if (nim === '') {
+        if (uname === '') {
             navigation.navigate("Profile");
         }
-        dispatch(fetchTasks({ nim, isComplete: "0" }));
-    }, [nim]);
+        dispatch(fetchActivitys({ uname, isComplete: "0" }));
+    }, [uname]);
 
     const showToast = () => {
         toast.show({
@@ -61,10 +61,10 @@ const TaskScreen = () => {
         try {
             if (editIndex !== -1) {
                 // Edit existing task 
-                dispatch(updateTask({ id: editIndex, title: task, nim, isComplete: false, completed: false }));
+                dispatch(updateTask({ id: editIndex, title: task, uname, isComplete: false, completed: false }));
             } else {
                 // Add new task 
-                dispatch(storeTask({ nim, title: task, isComplete: false, completed: false }));
+                dispatch(storeTask({ uname, title: task, isComplete: false, completed: false }));
             }
             setTask("");
         } catch (e) {
@@ -74,11 +74,11 @@ const TaskScreen = () => {
     };
 
     const handleDeleteTask = async (item, index) => {
-        dispatch(deleteTask({ nim, id: item.id, completed: false }));
+        dispatch(deleteTask({ uname, id: item.id, completed: false }));
     };
 
     const handleStatusChange = async (item, index) => {
-        dispatch(updateTask({ id: item.id, title: item.title, nim, isComplete: true, completed: false }));
+        dispatch(updateTask({ id: item.id, title: item.title, uname, isComplete: true, completed: false }));
     };
 
     const handleEditTask = (item, index) => {

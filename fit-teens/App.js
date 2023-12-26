@@ -3,9 +3,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { MaterialIcons } from '@expo/vector-icons';
 import { GluestackUIProvider } from "@gluestack-ui/themed";
 import { config } from "@gluestack-ui/config"
-import { AboutScreen, LoginScreen, TaskCompletedScreen, ArticleScreen } from './screens';
+import { AboutScreen, LoginScreen, TaskCompletedScreen, ArticleScreen, JadwalScreen } from './screens';
 import { store } from './redux/store';
 import { Provider } from 'react-redux';
 
@@ -19,9 +20,9 @@ const BottomNavigator = () => {
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
-          if (route.name === 'Task') {
+          if (route.name === 'Article') {
             iconName = 'tasks';
-          } else if (route.name === 'Completed') {
+          } else if (route.name === 'Jadwal') {
             iconName = 'clipboard-check';
           } else if (route.name === 'About') {
             iconName = 'exclamation-circle';
@@ -49,13 +50,13 @@ const BottomNavigator = () => {
       })}
     >
       <Tab.Screen
-        name="article"
+        name="Article"
         component={ArticleScreen}
         options={{  unmountOnBlur: true }}
       />
       <Tab.Screen
-        name="Completed"
-        component={TaskCompletedScreen}
+        name="Jadwal"
+        component={JadwalScreen}
         options={{ unmountOnBlur: true }}
       />
       <Tab.Screen

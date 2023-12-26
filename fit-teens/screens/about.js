@@ -18,16 +18,26 @@ const About = () => {
     return (
         <ScrollView contentContainerStyle={styles.scrollContainer}>
             <View style={styles.aboutUs}>
-            <View style={styles.container}>
-                <Text style={styles.p}>
-                Aplikasi ini dirancang untuk memenuhi Ujian Akhir Semester Mata Kuliah Pemrograman Mobile Informatika Telkom University Surabaya
-                </Text>
-                <Text style={styles.textWrapper}>Get to know us:</Text>
-                <Image style={styles.dina} source={require('../assets/dina.png')} />
-                <Image style={styles.ema} source={require('../assets/ema.png')} />
-                <Image style={styles.erica} source={require('../assets/erica.png')} />
-                <Image style={styles.elma} source={require('../assets/elma.png')} />
-            </View>
+                <View style={styles.container}>
+                    <Text style={styles.p}>
+                    Aplikasi ini dirancang untuk memenuhi Ujian Akhir Semester Mata Kuliah Pemrograman Mobile Informatika Telkom University Surabaya
+                    </Text>
+                    <Text style={styles.textWrapper}>Get to know us:</Text>
+                    <Image style={styles.dina} source={require('../assets/dina.png')} />
+                    <Image style={styles.ema} source={require('../assets/ema.png')} />
+                    <Image style={styles.erica} source={require('../assets/erica.png')} />
+                    <Image style={styles.elma} source={require('../assets/elma.png')} />
+                </View>
+
+                {/* <Button style={{ marginTop: 15 }} title="Clear Data" onPress={() => handleClearData()}></Button> */}
+                <Button
+                    style={{ marginTop: -60, marginBottom: 30 }}
+                    onPress={() => {
+                        navigation.navigate("Login")
+                    }}
+                >
+                    <ButtonText>Logout</ButtonText>
+                </Button>
             </View>
         </ScrollView>
       );
@@ -97,7 +107,6 @@ const styles = StyleSheet.create({
         top: 1330,
         width: 289,
     },
-
 });
 
 export default About;
