@@ -10,12 +10,15 @@ import {
 import { Button, ButtonText } from '@gluestack-ui/themed';
 import { useNavigation } from "@react-navigation/native";
 import { useSelector } from "react-redux";
+import { Header } from "../components";
 
-const About = () => {
+const AboutScreen = () => {
     const navigation = useNavigation();
     const { uname, pass } = useSelector((state) => state.login);
 
     return (
+        <>
+        <Header title={"ABOUT"}/>
         <ScrollView contentContainerStyle={styles.scrollContainer}>
             <View style={styles.aboutUs}>
                 <View style={styles.container}>
@@ -30,16 +33,9 @@ const About = () => {
                 </View>
 
                 {/* <Button style={{ marginTop: 15 }} title="Clear Data" onPress={() => handleClearData()}></Button> */}
-                <Button
-                    style={{ marginTop: -60, marginBottom: 30 }}
-                    onPress={() => {
-                        navigation.navigate("Login")
-                    }}
-                >
-                    <ButtonText>Logout</ButtonText>
-                </Button>
             </View>
         </ScrollView>
+        </>
       );
 };
 
@@ -109,4 +105,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default About;
+export default AboutScreen;
