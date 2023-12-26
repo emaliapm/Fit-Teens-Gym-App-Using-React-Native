@@ -1,3 +1,5 @@
+
+
 import React, { useEffect, useState } from "react";
 import {
     View,
@@ -6,24 +8,40 @@ import {
     TouchableOpacity,
     FlatList,
     StyleSheet,
-    ActivityIndicator
+    ActivityIndicator,
 } from "react-native";
-import { Divider, useToast, Toast, ToastTitle, ToastDescription, VStack } from "@gluestack-ui/themed";
+import {
+    Divider,
+    useToast,
+    Toast,
+    ToastTitle,
+    ToastDescription,
+    VStack,
+    HStack,
+    Button
+} from "@gluestack-ui/themed";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
-import { deleteTask, fetchTasks, storeTask, updateTask } from "../redux/taskSlice";
+import {
+    deleteTask,
+    fetchTasks,
+    storeTask,
+    updateTask,
+} from "../redux/taskSlice";
+import { Header } from "../components";
 
 const TaskScreen = () => {
     const navigation = useNavigation();
     const toast = useToast();
     const dispatch = useDispatch();
-    const { nim, nama } = useSelector((state) => state.profile);
-    const { data, loading } = useSelector((state) => state.task);
+    const { nim, nama } = useSelector((state) => state.login);
+    const { data } = useSelector((state) => state.task);
     const [task, setTask] = useState("");
     const [editIndex, setEditIndex] = useState(-1);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        if (nim === '') {
+        if (nim === "") {
             navigation.navigate("Profile");
         }
         dispatch(fetchTasks({ nim, isComplete: "0" }));
@@ -34,11 +52,7 @@ const TaskScreen = () => {
             placement: "top",
             render: ({ id }) => {
                 return (
-                    <Toast
-                        nativeID={"toast-" + id}
-                        action="error"
-                        variant="accent"
-                    >
+                    <Toast nativeID={"toast-" + id} action="error" variant="accent">
                         <VStack space="xs">
                             <ToastTitle>Error</ToastTitle>
                             <ToastDescription>
@@ -46,39 +60,70 @@ const TaskScreen = () => {
                             </ToastDescription>
                         </VStack>
                     </Toast>
-                )
+                );
             },
-        })
-    }
+        });
+    };
 
     const handleAddTask = async () => {
         // alert if task empty
-        if (task === '') {
+        if (task === "") {
             showToast();
             return;
         }
 
         try {
             if (editIndex !== -1) {
-                // Edit existing task 
-                dispatch(updateTask({ id: editIndex, title: task, nim, isComplete: false, completed: false }));
+                // Edit existing task
+                dispatch(
+                    updateTask({
+                        id: editIndex,
+                        title: task,
+                        nim,
+                        isComplete: false,
+                        completed: false,
+                    })
+                );
             } else {
-                // Add new task 
-                dispatch(storeTask({ nim, title: task, isComplete: false, completed: false }));
+                // Add new task
+                dispatch(
+                    storeTask({
+                        nim,
+                        title: task,
+                        isComplete: false,
+                        completed: false,
+                    })
+                );
             }
             setTask("");
         } catch (e) {
-            console.log('Error add task: in task-all.js');
+            console.log("Error add task: in task-all.js");
             console.error(e.message);
         }
     };
 
-    const handleDeleteTask = async (item, index) => {
-        dispatch(deleteTask({ nim, id: item.id, completed: false }));
+    const handleDeleteTask = async (item, index, completed = false) => {
+        dispatch(deleteTask({ nim, id: item.id, completed }));
     };
 
-    const handleStatusChange = async (item, index) => {
-        dispatch(updateTask({ id: item.id, title: item.title, nim, isComplete: true, completed: false }));
+    const handleStatusChange = async (item, index, completed = false) => {
+        try {
+            setLoading(true);
+            await dispatch(
+                updateTask({
+                    id: item.id,
+                    title: item.title,
+                    nim,
+                    isComplete: !completed,
+                    completed,
+                })
+            );
+        } catch (error) {
+            console.log('Error updating task:', error);
+        } finally {
+            setLoading(false);
+            console.log('Updated Redux state:', useSelector(state => state.task.data));
+        }
     };
 
     const handleEditTask = (item, index) => {
@@ -86,69 +131,97 @@ const TaskScreen = () => {
         setEditIndex(item.id);
     };
 
-    const renderItem = ({ item, index }) => (
-        <View style={styles.task}>
-            <Divider my={5} h={4} />
-            <Text
-                style={styles.itemList}>{item.title}</Text>
-            <View
-                style={styles.taskButtons}>
+    useEffect(() => {
+        dispatch(fetchTasks({ nim, isComplete: "1" }));
+    }, []);
 
-                <TouchableOpacity
-                    onPress={() => handleEditTask(item, index)}>
-                    <Text
-                        style={styles.editButton}>Edit</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={() => handleDeleteTask(item, index)}>
-                    <Text
-                        style={styles.deleteButton}>Delete</Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    onPress={() => handleStatusChange(item, index)}>
-                    <Text
-                        style={styles.statusButton}>Done</Text>
-                </TouchableOpacity>
-            </View>
+    const handleRefresh = () => {
+        dispatch(fetchTasks({ nim, isComplete: "0" }));
+        dispatch(fetchTasks({ nim, isComplete: "1" }));
+    };
+
+    const renderItem = ({ item, index, completed = false }) => (
+        <View style={styles.task}>
+            <VStack mt={10}>
+                <HStack justifyContent="space-between" mx={20}>
+                    <Text style={styles.itemList}>{item.title}</Text>
+                    <View style={styles.taskButtons}>
+                        <TouchableOpacity onPress={() => handleEditTask(item, index)}>
+                            <Text style={styles.editButton}>Edit</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={() => handleDeleteTask(item, index)}>
+                            <Text style={styles.deleteButton}>Delete</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            onPress={() => handleStatusChange(item, index, completed)}
+                        >
+                            <Text style={styles.statusButton}>
+                                {completed ? "Undone" : "Done"}
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                </HStack>
+            </VStack>
         </View>
     );
 
-    if (loading) {
-        return <ActivityIndicator size="large" style={styles.loader} />;
-    }
 
     return (
-        <View style={styles.container}>
-            <Text style={styles.heading}>Task</Text>
-            <Text style={styles.title}>Selamat Datang {nama}!</Text>
-            <TextInput
-                style={styles.input}
-                placeholder="Enter task"
-                value={task}
-                onChangeText={(text) => setTask(text)}
-            />
-            <TouchableOpacity
-                style={styles.addButton}
-                onPress={handleAddTask}>
-                <Text style={styles.addButtonText}>
-                    {editIndex !== -1 ? "Update Task" : "Add Task"}
+        <>
+        <Header title={"ALL TASK"} />
+            <View style={styles.container}>
+                <Text style={styles.heading}>Jadwal Aktivitas </Text>
+                <TextInput
+                    style={styles.input}
+                    placeholder="Masukan Aktivitas"
+                    value={task}
+                    onChangeText={(text) => setTask(text)}
+                    placeholderTextColor={"yellow"}
+                />
+                <TouchableOpacity style={styles.addButton} onPress={handleAddTask}>
+                    <Text style={styles.addButtonText}>
+                        {editIndex !== -1 ? "Update Task" : "Add Task"}
+                    </Text>
+                </TouchableOpacity>
+                <Button mt={10} title="Refresh" onPress={handleRefresh}>
+                    <Text style={{color: "white", fontSize: 20}}>Refresh</Text>
+                </Button>
+                <Text style={{ color: "yellow", marginTop: 20, fontSize: 18 }}>
+                    Aktivitas
                 </Text>
-            </TouchableOpacity>
-            <FlatList
-                data={data}
-                renderItem={renderItem}
-                keyExtractor={(item, index) => index.toString()}
-            />
-        </View>
+                <View style={styles.taskview}>
+                    <FlatList
+                        data={data.filter(task => !task.isComplete)}
+                        renderItem={(props) => renderItem({ ...props, completed: false })}
+                        keyExtractor={(item, index) => index.toString()}
+                    />
+                </View>
+                <Text style={{ color: "yellow", marginTop: 20, fontSize: 18 }}>
+                    Riwayat
+                </Text>
+                <View style={styles.taskview}>
+                    <FlatList
+                        data={data.filter(task => task.isComplete)}
+                        renderItem={(props) => renderItem({ ...props, completed: true })}
+                        keyExtractor={(item, index) => index.toString()}
+                    />
+                </View>
+                {loading && (
+                    <ActivityIndicator size="large" color="yellow" style={styles.loader} />
+                )}
+            </View>
+        </>
+
     );
 };
+
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingLeft: 20,
         paddingRight: 20,
-        marginTop: 10,
+        backgroundColor: "black",
     },
     title: {
         fontSize: 24,
@@ -159,39 +232,48 @@ const styles = StyleSheet.create({
         fontSize: 30,
         fontWeight: "bold",
         marginBottom: 7,
-        color: "#ED1B24",
+        color: "yellow",
+        alignSelf: "center",
+        marginTop: 30,
     },
     input: {
-        borderWidth: 3,
+        borderWidth: 2,
         borderColor: "#ccc",
         padding: 10,
-        marginBottom: 10,
+        marginTop: 20,
         borderRadius: 10,
         fontSize: 18,
+        height: 40,
+        borderColor: "yellow",
+        color: "white"
     },
     addButton: {
-        backgroundColor: "green",
+        backgroundColor: "yellow",
         padding: 10,
         borderRadius: 5,
-        marginBottom: 10,
+        marginTop: 10,
     },
     addButtonText: {
-        color: "white",
+        color: "black",
         fontWeight: "bold",
         textAlign: "center",
         fontSize: 18,
+
     },
     task: {
-        flexDirection: "column",
-        justifyContent: "space-between",
-        alignItems: "center",
         marginBottom: 15,
         fontSize: 18,
-        flexWrap: "wrap"
+        borderRadius: 10,
+    },
+    taskview: {
+        borderWidth: 2,
+        borderColor: "yellow",
+        borderRadius: 10
     },
     itemList: {
         fontSize: 19,
-        alignItems: "flex-start"
+        alignItems: "flex-start",
+        color: "yellow"
     },
     itemBorder: {
         borderWidth: 0.5,
@@ -199,7 +281,6 @@ const styles = StyleSheet.create({
     },
     taskButtons: {
         flexDirection: "row",
-        marginTop: 10
     },
     editButton: {
         marginRight: 10,
@@ -223,5 +304,6 @@ const styles = StyleSheet.create({
         marginBottom: 'auto'
     },
 });
+
 
 export default TaskScreen;

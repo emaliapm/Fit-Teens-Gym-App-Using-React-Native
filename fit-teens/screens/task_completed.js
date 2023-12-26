@@ -13,30 +13,49 @@ import { deleteTask, fetchTasks, storeTask, updateTask } from "../redux/taskSlic
 
 const TaskCompletedScreen = () => {
     const dispatch = useDispatch();
-    const navigation = useNavigation();
-    const { uname, pass } = useSelector((state) => state.login);
+    const { nim, nama } = useSelector((state) => state.login);
     const { data, loading } = useSelector((state) => state.task);
 
     useEffect(() => {
-        if (uname === '') {
-            navigation.navigate("Login");
-        }
-        dispatch(fetchTasks({ uname, isComplete: "0" }));
-    }, [uname]);
-
-    useEffect(() => {
-        dispatch(fetchTasks({ uname, isComplete: "1" }));
+        dispatch(fetchTasks({ nim, isComplete: "1" }));
     }, []);
 
     const handleDeleteTask = async (item, index) => {
-        dispatch(deleteTask({ id: item.id, uname, completed: true }));
+        dispatch(deleteTask({ id: item.id, nim, completed: true }));
     };
 
     const handleStatusChange = async (item, index) => {
-        dispatch(updateTask({ id: item.id, title: item.title, uname, isComplete: false, completed: true }));
-    };
+        // Assuming `updateTask` action handles marking the task as completed
+        dispatch(updateTask({ id: item.id, title: item.title, nim, isComplete: true, completed: true }));
+      };
+      
 
     const renderItem = ({ item, index }) => (
+        <View style={styles.task}>
+            <Text
+                style={styles.itemList}>{item.title}</Text>
+            <View
+                style={styles.taskButtons}>
+                <TouchableOpacity
+                    onPress={() => handleDeleteTask(item, index)}>
+                    <Text
+                        style={styles.deleteButton}>Delete</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={() => handleStatusChange(item, index)}>
+                    <Text
+                        style={styles.statusButton}>Undone</Text>
+                </TouchableOpacity>
+            </View>
+            <View style={styles.itemBorder}></View>
+        </View>
+    );
+
+    if (loading) {
+        return <ActivityIndicator size="large" style={styles.loader} />;
+    }
+
+    const renderItemCompleted = ({ item, index }) => (
         <View style={styles.task}>
             <Text
                 style={styles.itemList}>{item.title}</Text>
@@ -64,13 +83,14 @@ const TaskCompletedScreen = () => {
     return (
         <View style={styles.container}>
             <Text style={styles.heading}>Completed Task</Text>
-            <Text style={styles.title}>Selamat Datang {uname}!</Text>
+            <Text style={styles.title}>Selamat Datang {nama}!</Text>
             <FlatList
-                data={data}
-                renderItem={renderItem}
-                keyExtractor={(item, index) => index.toString()}
-            />
+        data={data.filter((task) => task.isComplete === "1")}
+        renderItem={({ item, index }) => renderItem({ item, index, isComplete: true })}
+        keyExtractor={(item, index) => index.toString()}
+      />
         </View>
+        
     );
 };
 

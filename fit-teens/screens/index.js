@@ -1,6 +1,7 @@
 import AboutScreen from "./about";
+import TaskScreen from "./task_all";
 import TaskCompletedScreen from "./task_completed";
-import LoginScreen from "./logIn";
-import ArticleScreen from "./ArticleScreen"
+import LoginScreen from "./login";
+import ArticleScreen from "./article";
 
-export { AboutScreen, TaskCompletedScreen, LoginScreen, ArticleScreen };
+export {ArticleScreen, AboutScreen, TaskCompletedScreen, TaskScreen, LoginScreen};
