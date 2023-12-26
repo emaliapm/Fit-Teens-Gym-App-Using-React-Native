@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { StyleSheet, Text, TouchableOpacity, View, FlatList, Image, Dimensions, ActivityIndicator } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import { fetchTasks } from "../redux/taskSlice";
+import { fetchActivity } from "../redux/jadwalSlice";
 
 const windowWidth = Dimensions.get('window').width;
   const ArticleScreen = ({ navigation }) => {
@@ -13,12 +13,12 @@ const windowWidth = Dimensions.get('window').width;
     if (uname === '') {
       navigation.navigate('Login');
     } else {
-      dispatch(fetchTasks({ uname, isComplete: '0' }));
+      dispatch(fetchActivity({ uname, isComplete: '0' }));
     }
   }, [uname, navigation, dispatch]);
 
   useEffect(() => {
-    dispatch(fetchTasks({ uname, isComplete: '1' }));
+    dispatch(fetchActivity({ uname, isComplete: '1' }));
   }, [dispatch, uname]);
 
 const [data, setData] = useState([]);
@@ -73,6 +73,7 @@ const [isLoading, setIsLoading] = useState(true);
   }
 };
 
+// ...
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -100,7 +101,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: 'bold',
     marginLeft: 15,
+    color: 'yellow', // Warna teks diubah menjadi kuning
+    marginLeft: 15,
   },
 });
+// ...
+
 
 export default ArticleScreen;

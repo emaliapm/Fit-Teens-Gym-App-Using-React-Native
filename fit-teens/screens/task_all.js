@@ -22,6 +22,7 @@ import {
 } from "@gluestack-ui/themed";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
+<<<<<<< HEAD
 import {
     deleteTask,
     fetchTasks,
@@ -29,23 +30,35 @@ import {
     updateTask,
 } from "../redux/taskSlice";
 import { Header } from "../components";
+=======
+import { deleteTask, fetchActivitys, storeTask, updateTask } from "../redux/taskSlice";
+>>>>>>> 1e0977c035f93e53a24d79eec69af2a933c0bb85
 
 const TaskScreen = () => {
     const navigation = useNavigation();
     const toast = useToast();
     const dispatch = useDispatch();
+<<<<<<< HEAD
     const { nim, nama } = useSelector((state) => state.login);
     const { data } = useSelector((state) => state.task);
+=======
+    const { uname, nama } = useSelector((state) => state.profile);
+    const { data, loading } = useSelector((state) => state.task);
+>>>>>>> 1e0977c035f93e53a24d79eec69af2a933c0bb85
     const [task, setTask] = useState("");
     const [editIndex, setEditIndex] = useState(-1);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+<<<<<<< HEAD
         if (nim === "") {
+=======
+        if (uname === '') {
+>>>>>>> 1e0977c035f93e53a24d79eec69af2a933c0bb85
             navigation.navigate("Profile");
         }
-        dispatch(fetchTasks({ nim, isComplete: "0" }));
-    }, [nim]);
+        dispatch(fetchActivitys({ uname, isComplete: "0" }));
+    }, [uname]);
 
     const showToast = () => {
         toast.show({
@@ -74,6 +87,7 @@ const TaskScreen = () => {
 
         try {
             if (editIndex !== -1) {
+<<<<<<< HEAD
                 // Edit existing task
                 dispatch(
                     updateTask({
@@ -94,6 +108,13 @@ const TaskScreen = () => {
                         completed: false,
                     })
                 );
+=======
+                // Edit existing task 
+                dispatch(updateTask({ id: editIndex, title: task, uname, isComplete: false, completed: false }));
+            } else {
+                // Add new task 
+                dispatch(storeTask({ uname, title: task, isComplete: false, completed: false }));
+>>>>>>> 1e0977c035f93e53a24d79eec69af2a933c0bb85
             }
             setTask("");
         } catch (e) {
@@ -102,6 +123,7 @@ const TaskScreen = () => {
         }
     };
 
+<<<<<<< HEAD
     const handleDeleteTask = async (item, index, completed = false) => {
         dispatch(deleteTask({ nim, id: item.id, completed }));
     };
@@ -124,6 +146,14 @@ const TaskScreen = () => {
             setLoading(false);
             console.log('Updated Redux state:', useSelector(state => state.task.data));
         }
+=======
+    const handleDeleteTask = async (item, index) => {
+        dispatch(deleteTask({ uname, id: item.id, completed: false }));
+    };
+
+    const handleStatusChange = async (item, index) => {
+        dispatch(updateTask({ id: item.id, title: item.title, uname, isComplete: true, completed: false }));
+>>>>>>> 1e0977c035f93e53a24d79eec69af2a933c0bb85
     };
 
     const handleEditTask = (item, index) => {
