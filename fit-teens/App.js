@@ -78,13 +78,26 @@ const App = () => {
             <Stack.Screen
               name="BottomNavigator"
               component={BottomNavigator}
-              options={{ headerShown: false }}
+              options={{ 
+                headerShown: false,
+                headerStyle : {
+                backgroundColor: 'black',
+                },
+               
+              }}
             />
             <Stack.Screen
               name="Login"
               component={LoginScreen}
               options={{ headerShown: false }}
             />
+            <Stack.Screen name="DetailArticle" component={DetailArticle} options={{ headerTitle: 'Detail Berita', 
+          headerStyle:{
+            backgroundColor: 'black',
+          }, headerTitleStyle: {
+            color: 'yellow'
+          }}} />
+
           </Stack.Navigator>
         </NavigationContainer>
       </GluestackUIProvider>

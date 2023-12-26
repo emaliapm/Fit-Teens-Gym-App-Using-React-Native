@@ -73,6 +73,7 @@ const [isLoading, setIsLoading] = useState(true);
   }
 };
 
+// ...
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -100,7 +101,11 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: 'bold',
     marginLeft: 15,
+    color: 'yellow', // Warna teks diubah menjadi kuning
+    marginLeft: 15,
   },
 });
+// ...
+
 
 export default ArticleScreen;
