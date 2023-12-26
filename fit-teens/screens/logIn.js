@@ -50,23 +50,26 @@ const LoginScreen = () => {
     return (
         <View style={styles.container}>
             <VStack space="4xl">
-                <VStack space="xs">
-                    <Text style={{ ...styles.text, color: "#FFE350" }}>
-                        Username
-                    </Text>
-                    <Input
-                        onFocus={() => setIsUnameInputFocused(true)}
-                        onBlur={() => setIsUnameInputFocused(false)}
-                        style={{ ...styles.textInput, borderBottomColor: isUnameInputFocused ? "#808080" : "$#C0C0C0" }}
-                    >
-                        <InputField
-                            type="text"
-                            value={tempUname}
-                            onChangeText={(text) => setTempUname(text)}
-                            style={{ ...styles.textInput, color: "#FFE350" }}
-                        />
-                    </Input>
-                </VStack>
+                <Text style={{ ...styles.title, color: "#FFE350", fontWeight: 'bold', fontSize: 28, paddingBottom: 80, textAlign: "center" }}>
+                    Log in to your account
+                </Text>
+                    <VStack space="xs">
+                        <Text style={{ ...styles.text, color: "#FFE350" }}>
+                            Username
+                        </Text>
+                        <Input
+                            onFocus={() => setIsUnameInputFocused(true)}
+                            onBlur={() => setIsUnameInputFocused(false)}
+                            style={{ ...styles.textInput, borderBottomColor: isUnameInputFocused ? "#808080" : "$#C0C0C0" }}
+                        >
+                            <InputField
+                                type="text"
+                                value={tempUname}
+                                onChangeText={(text) => setTempUname(text)}
+                                style={{ ...styles.textInput, color: "#FFE350" }}
+                            />
+                        </Input>
+                    </VStack>
                 <VStack space="xs">
                     <Text style={{ ...styles.text, color: "#FFE350" }}>
                         Password
@@ -80,6 +83,7 @@ const LoginScreen = () => {
                             type="text"
                             value={tempPass}
                             onChangeText={(text) => setTempPass(text)}
+                            secureTextEntry={true}
                             style={{ ...styles.textInput, color: "#FFE350" }}
                         />
                     </Input>

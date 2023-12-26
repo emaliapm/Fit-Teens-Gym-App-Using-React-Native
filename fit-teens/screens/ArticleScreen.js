@@ -1,64 +1,113 @@
-// ArticleScreen.js
-import React from 'react';
-import { View, ScrollView, Image, Text, StyleSheet } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { StyleSheet, Text, TouchableOpacity, View, FlatList, Image, Dimensions, ActivityIndicator } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import { fetchTasks } from "../redux/taskSlice";
 
-const articles = [
-  {
-    id: 1,
-    title: 'Manfaat Olahraga Rutin',
-    image: require('./assets/olahraga.jpg'),
-  },
-  {
-    id: 2,
-    title: 'Tips Makan Sehat',
-    image: require('./assets/makan-sehat.jpg'),
-  },
-  {
-    id: 3,
-    title: 'Cara Tidur yang Baik',
-    image: require('./assets/tidur.jpg'),
-  },
-  // Tambahkan artikel lainnya sesuai kebutuhan
-];
+const windowWidth = Dimensions.get('window').width;
+  const ArticleScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
+  const { uname, pass } = useSelector((state) => state.login);
 
-const ArticleScreen = () => {
-  return (
-    <ScrollView style={styles.container}>
-      {articles.map((article) => (
-        <View key={article.id} style={styles.articleContainer}>
-          <Image source={article.image} style={styles.articleImage} />
-          <View style={styles.articleContent}>
-            <Text style={styles.articleTitle}>{article.title}</Text>
+  useEffect(() => {
+    if (uname === '') {
+      navigation.navigate('Login');
+    } else {
+      dispatch(fetchTasks({ uname, isComplete: '0' }));
+    }
+  }, [uname, navigation, dispatch]);
+
+  useEffect(() => {
+    dispatch(fetchTasks({ uname, isComplete: '1' }));
+  }, [dispatch, uname]);
+
+const [data, setData] = useState([]);
+const [isLoading, setIsLoading] = useState(true);
+
+  const getData = () => {
+    fetch('https://raw.githubusercontent.com/emaliapm/Fit-Teens-Gym-App-Using-React-Native/master/fit-teens/article.json')
+      .then((response) => response.json())
+      .then((json) => {
+        setData(json.articles);
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const renderItem = ({ item }) => {
+    return (
+      <>
+        <TouchableOpacity style={styles.item} onPress={() => navigation.navigate('DetailArticle', { data: item })}>
+          <View style={{ flexDirection: 'row', alignItems: 'flex-start' }}>
+            <Image source={{ uri: item.image }} style={styles.itemImage} />
+            <View style={{ flexDirection: 'column' }}>
+              <Text style={styles.itemText}>{item.title}</Text>
+              <Text style={styles.date}>{item.date}</Text>
+            </View>
           </View>
-        </View>
-      ))}
-    </ScrollView>
-  );
+        </TouchableOpacity>
+        <View style={styles.itemBorder}></View>
+      </>
+    );
+  };
+
+  if (isLoading) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color="blue" />
+      </View>
+    );
+  } else {
+    return (
+      <View style={{ flex: 1 }}>
+        <StatusBar style="auto" />
+        <FlatList data={data} renderItem={renderItem} keyExtractor={(item) => item.id} />
+      </View>
+    );
+  }
 };
 
+// ...
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
-  },
-  articleContainer: {
-    flexDirection: 'row',
-    marginBottom: 16,
-  },
-  articleImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 8,
-  },
-  articleContent: {
-    flex: 1,
-    marginLeft: 16,
     justifyContent: 'center',
+    backgroundColor: 'black', // Warna latar belakang diubah menjadi hitam
   },
-  articleTitle: {
-    fontSize: 16,
+  item: {
+    padding: 20,
+    backgroundColor: 'black', // Warna latar belakang diubah menjadi hitam
+  },
+  itemBorder: {
+    borderWidth: 0.5,
+    borderColor: '#cccccc',
+  },
+  itemImage: {
+    width: 100,
+    height: 80,
+  },
+  itemText: {
+    fontSize: 15,
+    width: windowWidth - 150,
+    marginLeft: 15,
     fontWeight: 'bold',
+    color: 'yellow', // Warna teks diubah menjadi kuning
+  },
+  date: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    marginLeft: 15,
+    color: 'yellow', // Warna teks diubah menjadi kuning
   },
 });
+// ...
+
 
 export default ArticleScreen;
+
