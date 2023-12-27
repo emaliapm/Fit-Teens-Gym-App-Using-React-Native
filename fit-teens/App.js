@@ -5,12 +5,16 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { GluestackUIProvider } from "@gluestack-ui/themed";
 import { config } from "@gluestack-ui/config"
-import { AboutScreen, JadwalScreen, LoginScreen, TaskCompletedScreen } from './screens';
+import { AboutScreen, ArticleScreen, LoginScreen, ProfileScreen, TaskCompletedScreen, TaskScreen } from './screens';
 import { store } from './redux/store';
 import { Provider } from 'react-redux';
+import DetailArticle from './screens/DetailArticle';
+import Profilee from './screens/profilee';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
+
+const noHead = { headerShown: false };
 
 const BottomNavigator = () => {
   return (
@@ -20,23 +24,27 @@ const BottomNavigator = () => {
           let iconName;
           if (route.name === 'Task') {
             iconName = 'tasks';
-          } else if (route.name === 'Completed') {
-            iconName = 'clipboard-check';
+          }
+          else if (route.name === 'Article') {
+            iconName = 'newspaper';
           } else if (route.name === 'About') {
             iconName = 'exclamation-circle';
+          }
+          else if (route.name === 'Profile') {
+            iconName = 'user';
           }
           return (
             <FontAwesome5
               name={iconName}
               size={size}
-              color={focused ? 'navy' : color}
+              color={focused ? 'yellow' : color}
             />
           );
         },
         tabBarIconStyle: { marginTop: 10 },
         tabBarLabel: ({ children, color, focused }) => {
           return (
-            <Text style={{ marginBottom: 10, color: focused ? 'navy' : color }}>
+            <Text style={{ marginBottom: 10, color: focused ? 'yellow' : color }}>
               {children}
             </Text>
           );
@@ -44,24 +52,40 @@ const BottomNavigator = () => {
         tabBarStyle: {
           height: 70,
           borderTopWidth: 0,
+          backgroundColor: "black"
         },
       })}
     >
-      {/* <Tab.Screen
+      <Tab.Screen
         name="Task"
         component={TaskScreen}
+<<<<<<< HEAD
         options={{ title: 'All Task', unmountOnBlur: true }}
       /> */}
       <Tab.Screen
         name="Jadwal"
         component={JadwalScreen}
         options={{ unmountOnBlur: true }}
+=======
+        options={noHead}
+>>>>>>> 050843c19199167f589e4c687464bf680144fc95
       />
       <Tab.Screen
-        name="About Us"
-        component={AboutScreen}
-        options={{ unmountOnBlur: true }}
+        name="Article"
+        component={ArticleScreen}
+        options={noHead}
       />
+      <Tab.Screen
+        name="About"
+        component={AboutScreen}
+        options={noHead}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={Profilee}
+        options={noHead}
+      />
+
     </Tab.Navigator>
   );
 };
@@ -71,7 +95,7 @@ const App = () => {
     <Provider store={store}>
       <GluestackUIProvider config={config}>
         <NavigationContainer>
-          <Stack.Navigator>
+          <Stack.Navigator initialRouteName='Login'>
             <Stack.Screen
               name="BottomNavigator"
               component={BottomNavigator}
@@ -82,6 +106,12 @@ const App = () => {
               component={LoginScreen}
               options={{ headerShown: false }}
             />
+            <Stack.Screen
+              name="DetailArticle"
+              component={DetailArticle}
+              options={{ headerShown: false }}
+            />
+
           </Stack.Navigator>
         </NavigationContainer>
       </GluestackUIProvider>

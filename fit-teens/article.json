@@ -1,0 +1,85 @@
+{
+    "title": "PM Static API For Learning",
+    "articles": [
+        {
+            "id": "1",
+            "title": "Olahraga yang Cocok untuk Remaja Perempuan",
+            "image": "https://media.istockphoto.com/id/635941014/id/foto/fit-gadis-dalam-posisi-papan-di-tikar-di-rumah.jpg?s=1024x1024&w=is&k=20&c=A0jUZzGtLv3TAw8OZbIzWw3IE-UNLL4uq21Al_ulFKM=",
+            "date": "27 Oktober 2023",
+            "content": "Khusus bagi remaja perempuan, berolahraga juga sangat disarankan rutin dilakukan. Tidak hanya untuk menjaga kondisi fisik, tetapi juga kesehatan mental.Dikutip dari Kids Health, remaja perempuan yang rutin berolahraga memiliki risiko lebih kecil untuk terkena kanker payudara di kemudian hari. Berolahraga juga bisa membantu anak perempuan melewati masa remaja yang sulit.",
+            "link": "https://www.bola.com/ragam/read/4960479/macam-macam-olahraga-yang-cocok-untuk-remaja-perempuan?page=2"
+        },
+        {
+            "id": "2",
+            "title": "Pola Hidup Sehat Remaja",
+            "image": "https://media.istockphoto.com/id/964805456/id/foto/untuk-cinta-skating.jpg?s=612x612&w=is&k=20&c=Fg-9seYf4U5iqSfBk5z-Ja6PstWcNKm-PuXmxnDGHns=",
+            "date": "18 Oktober 2023",
+            "content": "Sebagai seorang remaja, tak ada salahnya untuk mulai memperhatikan hal-hal tersebut. Gaya hidup sehat remaja yang dipraktikkan secara menyeluruh pada akhirnya akan membawa manfaat baik di masa sekarang ataupun di masa yang akan datang.",
+            "link": "https://disdikbud.kendalkab.go.id/2022/11/02/pola-hidup-sehat-remaja/"
+        },
+        {
+            "id": "3",
+            "title": "Tips Pola Hidup Sehat di Kalangan Remaja",
+            "image": "https://media.istockphoto.com/id/1433432507/id/foto/makan-sehat-piring-dengan-makanan-vegan-atau-vegetarian-di-tangan-wanita-diet-nabati-yang.jpg?s=612x612&w=is&k=20&c=NQBPSrJehHwCN8yc56xZshZyHVnsVQiOaCN9RMVeht4=",
+            "date": "18 Oktober 2023",
+            "content": "Semua orang pasti ingin selalu sehat dan terhindar dari berbagai penyakit. Sebab, dengan tubuh dan pikiran yang selalu sehat, segala aktivitas yang  kita kerjakan akan selesai lebih cepat. Menjaga kesehatan pun nyatanya tidak sesulit yang dibayangkan, salah satunya adalah dengan menerapkan gaya hidup sehat setiap hari.",
+            "link": "https://nuansa.nusaputra.ac.id/2022/02/16/tips-pola-hidup-sehat-di-kalangan-remaja/"
+        },
+        {
+            "id": "4",
+            "title": "Healty Lifestyle is a Choice!",
+            "image": "https://10tph8qrsp2c6.cdn.shift8web.com/wp-content/uploads/2023/10/wisuda.jpg",
+            "date": "16 Oktober 2023",
+            "content": "Membangun kebiasaan pola hidup sehat yang konsisten memang cukup tricky (sulit) bagi beberapa orang. Namun, kebiasaan pola hidup sehat memberikan segudang manfaat bagi tubuh. Dilansir dari Harvard Health Publishing bahwasannya orang yang tidak memiliki kebiasaan pola hidup yang sehat jauh lebih mungkin meninggal sebelum waktunya karena kanker atau penyakit kardiovaskular. Ternyata pola hidup sehat juga sangat mempengaruhi faktor panjangnya usia. Yuk, simak tips berikut ini untuk membangun pola hidup yang sehat!            ",
+            "link": "https://health.detik.com/berita-detikhealth/d-5974715/healthy-lifestyle-is-a-choice"
+        },
+        {
+            "id": "5",
+            "title": "Kenali Pola Hidup Sehat dan Langkah-Langkahnya",
+            "image": "https://media.istockphoto.com/id/1356333952/id/foto/wanita-muda-yang-sehat-berolahraga-dengan-sepeda-di-taman-umum.jpg?s=612x612&w=is&k=20&c=gZ9stIpyDsBMav7G9GGwAhzNCQ2fVsxtgmDGN5OxoeQ=",
+            "date": "19 September 2023",
+            "content": "Menurut Organisasi Kesehatan Dunia (WHO), pola hidup sehat, atau yang sering disebut sebagai healthy lifestyle, adalah cara menjalani kehidupan yang dapat meminimalisir risiko terkena penyakit serius atau kematian dini. Pola hidup sehat tidak hanya tentang makan makanan bergizi dan olahraga, melainkan meliputi seluruh aspek kehidupan yang berkaitan dengan kondisi fisik, mental, dan juga sosial.",
+            "link": "https://www.manulife.co.id/id/artikel/kenali-pola-hidup-sehat-dan-langkah-langkahnya.html"
+        },
+        {
+            "id": "6",
+            "title": "Healthy Lifestyle",
+            "image": "https://media.istockphoto.com/id/495701182/id/foto/pasangan-angkat-beban-di-gym.jpg?s=612x612&w=is&k=20&c=lYcPmByFqEvCMHlQzsLSlJGkS5KdRP46M1TJmCI6Y_0=",
+            "date": "27 Oktober 2023",
+            "content": "The good news: a healthy lifestyle can help you feel better. Even better, you don’t have to overhaul your entire life overnight. It’s pretty easy to make a couple of small changes that can steer you in the direction of improved well-being. And once you make one change, that success can motivate you to continue to make more positive shifts.",
+            "link": "https://www.healthline.com/health/fitness-nutrition/healthy-lifestyle-benefits"
+        },
+        {
+            "id": "7",
+            "title": "Healthy Lifestyle Benefits: 5 Tips for Living Your Strongest, Healthiest Life Yet",
+            "image": "https://media.istockphoto.com/id/1356334007/id/foto/pasangan-asia-yang-sehat-jogging-di-taman-umum.jpg?s=612x612&w=is&k=20&c=HMD0BUWHBlb2KSIOxI_oIvnm-4okX1hL6TzyHbLyI-8=",
+            "date": "18 Oktober 2023",
+            "content": "Starting a healthy lifestyle can involve eating nutritious foods, engaging in regular physical activity, and prioritizing your mental health.",
+            "link": "https://ittelkom-sby.ac.id/panduan-sukses-meraih-pendanaan-riset-dan-inovasi-brin-tips-dari-workshop-ittelkom-surabaya/"
+        },
+        {
+            "id": "8",
+            "title": "Top 11 Habits For a Healthy Lifestyle",
+            "image": "https://media.istockphoto.com/id/1679800838/id/foto/close-up-kaki-pelari-sportman-berlari-di-treadmill-di-klub-kebugaran-latihan-kardio-gaya-hidup.jpg?s=612x612&w=is&k=20&c=IOPuw63YItgd1pokxPMAHBd0L8Xmrund-AmJ8hFGbtU=",
+            "date": "18 Oktober 2023",
+            "content": "Being healthy and fit isn’t a trend; it’s a lifestyle. A healthy lifestyle gives you a happy, stable, and successful life. Unfortunately, we always think about the future and take shortcuts to achieve success in a shorter period of time. Achieving our goals with shortcuts can be stressful and it may lead to an invitation for various illnesses and disabilities.Nowadays, maintaining a healthy lifestyle can be tricky and difficult due to changing lifestyles, increased expectations, and expenses.",
+            "link": "https://pharmeasy.in/blog/top-10-habits-for-a-healthy-lifestyle/"
+        },
+        {
+            "id": "9",
+            "title": "Panduan Pola Makan Sehat untuk Usia Remaja",
+            "image": "https://media.istockphoto.com/id/912134022/id/foto/mangkuk-burrito-ayam-meksiko-buatan-sendiri-dengan-nasi-kacang-kacangan-jagung-tomat-alpukat.jpg?s=612x612&w=is&k=20&c=487_781BOLmcDAKnsZfzEw2H6xR0sd9C-cDFrxKO7hw=",
+            "date": "16 Oktober 2023",
+            "content": "Pada masa remaja, sebagian besar anak memiliki pola makan yang tidak seimbang karena sering mengonsumsi jajanan atau camilan rendah gizi. Padahal, pola makan sehat tidak hanya untuk anak-anak dan orang dewasa, tetapi juga penting untuk perkembangan remaja. Berikut panduan pola makan sehat untuk remaja.",
+            "link": "https://hellosehat.com/parenting/remaja/kesehatan-remaja/diet-pola-makan-sehat-untuk-usia-remaja/"
+        },
+        {
+            "id": "10",
+            "title": "Begini Pola Makan yang Sehat untuk Remaja",
+            "image": "https://media.istockphoto.com/id/1207547909/id/foto/pelatih-pribadi-asia-melatih-seorang-wanita-binaraga-untuk-melakukan-latihan-jongkok-dengan.jpg?s=612x612&w=is&k=20&c=yNEyTqfLuhRaNNROKsqp25ywnwUxNj4ryeYu0WlQJI8=",
+            "date": "19 September 2023",
+            "content": "Memenuhi nutrisi remaja adalah hal yang penting untuk menunjang tumbuh kembangnya. Sayangnya, masih ada saja anak yang suka memilih-milih makanan, atau bahkan menolak makan karena berbagai alasan tertentu. Bila kebutuhan gizinya tidak tercukupi, berbagai penyakit dan masalah kesehatan bisa muncul. Karenanya, Anda, sebagai orang tua, perlu membangun kebiasaan dan menekankan betapa pentingnya mengonsumsi makanan sehat pada anak remaja.",
+            "link": "https://jovee.id/begini-pola-makan-yang-sehat-untuk-remaja/"
+        }
+    ]
+}

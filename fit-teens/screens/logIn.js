@@ -1,6 +1,15 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
 import {
+    View,
+    Text,
+    StyleSheet,
+    // Button,
+    Linking,
+    TextInput,
+} from "react-native";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+    
     useToast,
     Toast,
     ToastTitle,
@@ -10,20 +19,22 @@ import {
     ButtonText,
     Input,
     InputField,
+    InputSlot,
     FormControl,
+    Heading
 } from '@gluestack-ui/themed';
-import { useDispatch } from 'react-redux';
-import { setUname, setPass } from "../redux/loginSlice";
+import { useSelector, useDispatch } from 'react-redux';
+import { setNama, setNim } from "../redux/profileSlice";
 import { useNavigation } from "@react-navigation/native";
 
 const LoginScreen = () => {
     const toast = useToast();
     const navigation = useNavigation();
+    // We use the useDispatch hook to dispatch actions to the store
     const dispatch = useDispatch();
-    const [tempUname, setTempUname] = useState('');
-    const [tempPass, setTempPass] = useState('');
-    const [isUnameInputFocused, setIsUnameInputFocused] = useState(false);
-    const [isPassInputFocused, setIsPassInputFocused] = useState(false);
+    const profile = useSelector((state) => state.login);
+    const [tempNama, setTempNama] = useState('')
+    const [tempNim, setTempNim] = useState('')
 
     const showToast = () => {
         toast.show({
@@ -38,69 +49,71 @@ const LoginScreen = () => {
                         <VStack space="xs">
                             <ToastTitle>Error</ToastTitle>
                             <ToastDescription>
-                                Anda belum mengisi data!
+                                Anda belum mengisi Nama atau NIM!
                             </ToastDescription>
                         </VStack>
                     </Toast>
-                );
+                )
             },
-        });
+        })
     }
 
     return (
         <View style={styles.container}>
-            <VStack space="4xl">
-                <VStack space="xs">
-                    <Text style={{ ...styles.text, color: "#FFE350" }}>
-                        Username
-                    </Text>
-                    <Input
-                        onFocus={() => setIsUnameInputFocused(true)}
-                        onBlur={() => setIsUnameInputFocused(false)}
-                        style={{ ...styles.textInput, borderBottomColor: isUnameInputFocused ? "#808080" : "$#C0C0C0" }}
-                    >
-                        <InputField
-                            type="text"
-                            value={tempUname}
-                            onChangeText={(text) => setTempUname(text)}
-                            style={{ ...styles.textInput, color: "#FFE350" }}
-                        />
-                    </Input>
-                </VStack>
-                <VStack space="xs">
-                    <Text style={{ ...styles.text, color: "#FFE350" }}>
-                        Password
-                    </Text>
-                    <Input
-                        onFocus={() => setIsPassInputFocused(true)}
-                        onBlur={() => setIsPassInputFocused(false)}
-                        style={{ ...styles.textInput, borderBottomColor: isPassInputFocused ? "#808080" : "$#C0C0C0" }}
-                    >
-                        <InputField
-                            type="text"
-                            value={tempPass}
-                            onChangeText={(text) => setTempPass(text)}
-                            style={{ ...styles.textInput, color: "#FFE350" }}
-                        />
-                    </Input>
-                </VStack>
+            <Heading style={styles.judul} >Log in to your account</Heading>
+            <FormControl
+                p="$4"
+                borderRadius="$lg"
+                borderColor="$borderLight300"
+                sx={{
+                    _dark: {
+                        borderWidth: "$1",
+                        borderRadius: "$lg",
+                        borderColor: "$borderDark800",
+                    },
+                }}
+            >
+                <VStack space="4xl">
+                    <Heading color="black" lineHeight="$md">
+                        Profile {profile.nama} ({profile.nim})
+                    </Heading>
+                    <VStack space="sm">
+                        <Text style={{color: "yellow"}} lineHeight="sm" sx={{ width: '100%' }}>
+                            Username
+                        </Text>
+                        <Input variant="underlined" >
+                            <InputField color="white" type="text" value={tempNama}
+                                onChangeText={(text) => setTempNama(text)} />
+                        </Input>
+                    </VStack>
+                    <VStack space="xs">
+                        <Text style={{color: "yellow"}} lineHeight="$xs">
+                            Password
+                        </Text>
+                        <Input variant="underlined">
+                            <InputField color="white" type="password" value={tempNim}
+                                onChangeText={(text) => setTempNim(text)} />
+                        </Input>
+                    </VStack>
 
-                <Button
-                    ml="auto"
-                    onPress={() => {
-                        if ( tempUname === '' || tempPass === '') {
-                            showToast();
-                            return;
-                        }
-                        dispatch(setUname(tempUname));
-                        dispatch(setPass(tempPass));
-                        navigation.navigate("BottomNavigator");
-                    }}
-                    style={{ backgroundColor: "#808080" }}
-                >
-                    <ButtonText style={{ color: "#FFE350", justifyContent: 'center', alignContent: 'center', flex: 1, textAlign: 'center' }}>Log in</ButtonText>
-                </Button>
-            </VStack>
+                    <Button
+                    
+                        ml="auto"
+                        onPress={() => {
+                            if (tempNama === '' || tempNim === '') {
+                                showToast();
+                                return;
+                            }
+                            dispatch(setNama(tempNama));
+                            dispatch(setNim(tempNim));
+                            navigation.navigate("BottomNavigator");
+                        }}
+                        style={{width: "100%", backgroundColor: "yellow"}}
+                    >
+                        <ButtonText color="$black">Log in</ButtonText>
+                    </Button>
+                </VStack>
+            </FormControl>
         </View>
     );
 };
@@ -108,17 +121,40 @@ const LoginScreen = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        // alignItems: 'center',
         justifyContent: 'center',
         padding: 20,
-        backgroundColor: 'black',
+        backgroundColor: "black",
     },
-    text: {
-        width: '100%',
+    input: {
+        borderWidth: 3,
+        borderColor: "#ccc",
+        padding: 10,
+        marginBottom: 10,
+        borderRadius: 10,
+        fontSize: 18,
     },
-    textInput: {
-        borderWidth: 0,
-        borderBottomWidth: 1,
-        borderBottomColor: "#C0C0C0",
+    title: {
+        fontSize: 24,
+        fontWeight: "bold",
+        marginBottom: 20,
+    },
+    heading: {
+        fontSize: 30,
+        fontWeight: "bold",
+        marginBottom: 7,
+        color: "blue",
+    },
+    content: {
+        fontSize: 18,
+        marginBottom: 20,
+        padding: 20
+    },
+    judul: {
+        color: "yellow",
+        alignSelf: "center",
+        fontSize: 25,
+
     },
 });
 
