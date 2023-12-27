@@ -1,7 +1,45 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
+import * as Font from 'expo-font';
 
 const Jadwal = () => {
+  const [isFontLoaded, setIsFontLoaded] = useState(false);
+  const [activities, setActivities] = useState([1, 2, 3, 4, 5]);
+
+  useEffect(() => {
+    async function loadFonts() {
+      await Font.loadAsync({
+        'Montserrat-Regular': require('.\assets\fonts\static\Montserrat-Regular.ttf'),
+        'Montserrat-Bold': require('./assets/fonts/static/Montserrat-Bold.ttf'),
+        'Montserrat-Black': require('./assets/fonts/static/Montserrat-Black.ttf')
+      });
+      setIsFontLoaded(true);
+    }
+    loadFonts();
+  }, []);
+
+  const addActivity = () => {
+    const newActivity = activities.length + 1;
+    setActivities([...activities, newActivity]);
+  };
+
+  const editActivity = (index) => {
+    // Implementasi fungsi edit aktivitas di sini
+    // Misalnya, tampilkan prompt atau modal untuk pengeditan
+    alert(`Edit Aktivitas ${index}`);
+  };
+
+  const deleteActivity = (index) => {
+    const updatedActivities = activities.filter((_, i) => i !== index);
+    setActivities(updatedActivities);
+  };
+
+  const completeActivity = (index) => {
+    // Implementasi fungsi selesai aktivitas di sini
+    // Misalnya, tandai aktivitas sebagai selesai
+    alert(`Selesai Aktivitas ${index}`);
+  };
+
   return (
     <View style={styles.jadwal}>
       <View style={styles.div}>
@@ -9,38 +47,39 @@ const Jadwal = () => {
           <Text style={styles.textWrapper}>Masukkan aktivitas</Text>
         </View>
         <View style={styles.overlapGroup}>
-          {[1, 2, 3, 4, 5].map((index) => (
+          {activities.map((index) => (
             <View key={index} style={styles.textWrapperContainer}>
               <Text style={styles.textWrapper}>{`Aktivitas ${index}`}</Text>
+              <TouchableOpacity
+                style={styles.editButton}
+                onPress={() => editActivity(index)}
+              >
+                <Text style={styles.textWrapper}>Edit</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.deleteButton}
+                onPress={() => deleteActivity(index)}
+              >
+                <Text style={styles.textWrapper}>Hapus</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.completeButton}
+                onPress={() => completeActivity(index)}
+              >
+                <Text style={styles.textWrapper}>Selesai</Text>
+              </TouchableOpacity>
             </View>
           ))}
-          <View style={styles.line}></View>
-          <View style={styles.line}></View>
-          <View style={styles.line}></View>
-          <View style={styles.line}></View>
-          <View style={styles.line}></View>
-          {[1, 2, 3, 4, 5].map((index) => (
-            <TouchableOpacity key={index} style={styles.editButton}>
-              <Text style={styles.textWrapper}>Edit</Text>
-            </TouchableOpacity>
-          ))}
-          {[1, 2, 3, 4, 5].map((index) => (
-            <TouchableOpacity key={index} style={styles.deleteButton}>
-              <Text style={styles.textWrapper}>Hapus</Text>
-            </TouchableOpacity>
-          ))}
-          {[1, 2, 3, 4, 5].map((index) => (
-            <TouchableOpacity key={index} style={styles.completeButton}>
-              <Text style={styles.textWrapper}>Selesai</Text>
-            </TouchableOpacity>
-          ))}
         </View>
-        <View style={styles.overlap4}>
+        <TouchableOpacity
+          style={styles.editButton}
+          onPress={addActivity}
+        >
           <Text style={styles.textWrapper}>Tambah Aktivitas</Text>
-        </View>
+        </TouchableOpacity>
         <Text style={styles.textWrapper}>Aktivitas</Text>
         <View style={styles.overlap5}>
-          {[1, 2, 3, 4, 5].map((index) => (
+          {activities.map((index) => (
             <View key={index} style={styles.textWrapperContainer}>
               <Text style={styles.textWrapper}>{`Aktivitas ${index}`}</Text>
             </View>
@@ -50,7 +89,7 @@ const Jadwal = () => {
           <View style={styles.line}></View>
           <View style={styles.line}></View>
           <View style={styles.line}></View>
-          {[1, 2, 3, 4, 5].map((index) => (
+          {activities.map((index) => (
             <TouchableOpacity key={index} style={styles.deleteButton}>
               <Text style={styles.textWrapper}>Hapus</Text>
             </TouchableOpacity>
@@ -134,15 +173,6 @@ const styles = StyleSheet.create({
     height: 19,
     position: "absolute",
     width: 44,
-  },
-  overlap4: {
-    backgroundColor: "#FFE350",
-    borderRadius: 5,
-    height: 27,
-    left: 23,
-    position: "absolute",
-    top: 185,
-    width: 344,
   },
   overlap5: {
     borderColor: "#FFE350",
