@@ -59,16 +59,7 @@ const BottomNavigator = () => {
       <Tab.Screen
         name="Task"
         component={TaskScreen}
-<<<<<<< HEAD
-        options={{ title: 'All Task', unmountOnBlur: true }}
-      /> */}
-      <Tab.Screen
-        name="Jadwal"
-        component={JadwalScreen}
-        options={{ unmountOnBlur: true }}
-=======
         options={noHead}
->>>>>>> 050843c19199167f589e4c687464bf680144fc95
       />
       <Tab.Screen
         name="Article"

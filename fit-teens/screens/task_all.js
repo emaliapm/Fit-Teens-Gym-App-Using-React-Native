@@ -6,6 +6,7 @@ import {
     TouchableOpacity,
     FlatList,
     StyleSheet,
+    Modal,
     ActivityIndicator,
 } from "react-native";
 import {
@@ -16,11 +17,22 @@ import {
     ToastDescription,
     VStack,
     HStack,
-    Button
+    Button,
+    useDisclosure,
+    ModalContent,
+    ModalHeader,
+    ModalBody,
+    ModalCloseButton,
 } from "@gluestack-ui/themed";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
-import { deleteTask, fetchActivitys, storeTask, updateTask } from "../redux/taskSlice";
+import {
+    deleteTask,
+    fetchTasks,
+    storeTask,
+    updateTask,
+} from "../redux/taskSlice";
+import { Header } from "../components";
 
 const TaskScreen = () => {
     const navigation = useNavigation();
@@ -28,18 +40,32 @@ const TaskScreen = () => {
     const { nim, nama } = useSelector((state) => state.login);
     const { data } = useSelector((state) => state.task);
     const dispatch = useDispatch();
-    const { uname, nama } = useSelector((state) => state.profile);
-    const { data, loading } = useSelector((state) => state.task);
     const [task, setTask] = useState("");
     const [editIndex, setEditIndex] = useState(-1);
     const [loading, setLoading] = useState(false);
+    const [isModalVisible, setModalVisible] = useState(false);
+    const [selectedTask, setSelectedTask] = useState(null);
+
+    const fetchTasksByCompletion = (isComplete) => {
+        setLoading(true);
+
+        dispatch(fetchTasks({ nim, isComplete }))
+            .then(() => {
+                // Successfully fetched tasks
+            })
+            .catch((error) => {
+                console.error(`Error fetching tasks with isComplete=${isComplete}:`, error);
+                showToastError("Failed to fetch tasks.");
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    };
 
     useEffect(() => {
-        if (uname === '') {
-            navigation.navigate("Profile");
-        }
-        dispatch(fetchActivitys({ uname, isComplete: "0" }));
-    }, [uname]);
+        fetchTasksByCompletion("0");
+    }, [dispatch, nim]);
+
 
     const showToast = () => {
         toast.show({
@@ -68,11 +94,27 @@ const TaskScreen = () => {
 
         try {
             if (editIndex !== -1) {
-                // Edit existing task 
-                dispatch(updateTask({ id: editIndex, title: task, uname, isComplete: false, completed: false }));
+                // Edit existing task
+                dispatch(
+                    updateTask({
+                        id: editIndex,
+                        title: task,
+                        nim,
+                        isComplete: false,
+                        completed: false,
+                    })
+                );
+                setEditIndex(-1); // Reset editIndex after editing task
             } else {
-                // Add new task 
-                dispatch(storeTask({ uname, title: task, isComplete: false, completed: false }));
+                // Add new task
+                dispatch(
+                    storeTask({
+                        nim,
+                        title: task,
+                        isComplete: false,
+                        completed: false,
+                    })
+                );
             }
             setTask("");
         } catch (e) {
@@ -81,57 +123,160 @@ const TaskScreen = () => {
         }
     };
 
-    const handleDeleteTask = async (item, index) => {
-        dispatch(deleteTask({ uname, id: item.id, completed: false }));
+    const handleDeleteTask = (item, index, completed = false) => {
+        setLoading(true);
+
+        // Ensure that you are using the dispatch function inside the component
+        dispatch(deleteTask({ nim, id: item.id, completed }))
+            .then(() => dispatch(fetchTasks({ nim, isComplete: "1" })))
+            .then(() => {
+                // Successfully refetched tasks after deletion
+                console.log('Updated Redux state:', useSelector(state => state.task.data));
+            })
+            
+            .finally(() => {
+                setLoading(false);
+            });
     };
 
-    const handleStatusChange = async (item, index) => {
-        dispatch(updateTask({ id: item.id, title: item.title, uname, isComplete: true, completed: false }));
+    const handleStatusChange = (item, index, completed = false) => {
+        setLoading(true);
+
+        dispatch(updateTask({
+            id: item.id,
+            title: item.title,
+            nim,
+            isComplete: !completed,
+            completed,
+        }))
+            .then(() => {
+                // Successfully updated task
+                console.log('Updated Redux state:', useSelector(state => state.task.data));
+            })
+            .catch((error) => {
+                console.log('Error updating task:', error);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
     };
+
 
     const handleEditTask = (item, index) => {
         setTask(item.title);
         setEditIndex(item.id);
     };
 
-    useEffect(() => {
-        dispatch(fetchTasks({ nim, isComplete: "1" }));
-    }, []);
+    const handleTaskPress = () => {
+        setLoading(true);
 
-    const handleRefresh = () => {
-        dispatch(fetchTasks({ nim, isComplete: "0" }));
-        dispatch(fetchTasks({ nim, isComplete: "1" }));
+        dispatch(fetchTasks({ nim, isComplete: "1" }))
+            .then(() => {
+                // Fetching complete tasks succeeded
+                setModalVisible(true);
+            })
+            .catch((error) => {
+                // Fetching complete tasks failed
+                console.error("Error fetching complete tasks:", error);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
     };
 
-    const renderItem = ({ item, index, completed = false }) => (
-        <View style={styles.task}>
-            <VStack mt={10}>
-                <HStack justifyContent="space-between" mx={20}>
-                    <Text style={styles.itemList}>{item.title}</Text>
-                    <View style={styles.taskButtons}>
-                        <TouchableOpacity onPress={() => handleEditTask(item, index)}>
-                            <Text style={styles.editButton}>Edit</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={() => handleDeleteTask(item, index)}>
-                            <Text style={styles.deleteButton}>Delete</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            onPress={() => handleStatusChange(item, index, completed)}
-                        >
-                            <Text style={styles.statusButton}>
-                                {completed ? "Undone" : "Done"}
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-                </HStack>
-            </VStack>
-        </View>
+    const closeModal = () => {
+        setLoading(true);
+
+        dispatch(fetchTasks({ nim, isComplete: "0" }))
+            .then(() => {
+                // Fetching incomplete tasks succeeded
+                setModalVisible(false);
+            })
+            .catch((error) => {
+                // Fetching incomplete tasks failed
+                console.error("Error fetching incomplete tasks:", error);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    };
+    useEffect(() => {
+        console.log("Completed tasks:", data.filter((task) => task.isComplete));
+        dispatch(fetchTasks({ nim, isComplete: "1" }));
+    }, [editIndex]); // Ensure this dependency is correct
+
+    useEffect(() => {
+        console.log("Modal visibility:", isModalVisible);
+        dispatch(fetchTasks({ nim, isComplete: "1" }));
+    }, [isModalVisible]);
+
+    const handleRefresh = () => {
+        setLoading(true);
+
+        Promise.all([
+            dispatch(fetchTasks({ nim, isComplete: "0" })),
+            dispatch(fetchTasks({ nim, isComplete: "1" })),
+        ])
+            .then(() => {
+                // Successfully fetched both incomplete and complete tasks
+            })
+            .catch((error) => {
+                console.error('Error refreshing tasks:', error);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    };
+
+
+    const renderMainItem = ({ item, index, completed = false }) => (
+        <TouchableOpacity onPress={() => handleTaskPress(item)}>
+            <View style={styles.task}>
+                <VStack mt={10}>
+                    <HStack justifyContent="space-between" mx={20}>
+                        <Text style={styles.itemList}>{item.title}</Text>
+                        <View style={styles.taskButtons}>
+                            <TouchableOpacity onPress={() => handleEditTask(item, index)}>
+                                <Text style={styles.editButton}>Edit</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={() => handleDeleteTask(item, index)}>
+                                <Text style={styles.deleteButton}>Delete</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                onPress={() => handleStatusChange(item, index, completed)}
+                            >
+                                <Text style={styles.statusButton}>
+                                    {completed ? "Undone" : "Done"}
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    </HStack>
+                </VStack>
+            </View>
+        </TouchableOpacity>
     );
 
+    // For the history modal
+    const renderHistoryItem = ({ item, index, completed = false }) => (
+        <TouchableOpacity onPress={() => handleTaskPress(item)}>
+            <View style={styles.task}>
+                <VStack mt={10}>
+                    <HStack justifyContent="space-between" mx={20}>
+                        <Text style={styles.itemList}>{item.title}</Text>
+                        <View style={styles.taskButtons}>
+                            <TouchableOpacity onPress={() => handleDeleteTask(item, index)}>
+                                <Text style={styles.deleteButton}>Delete</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </HStack>
+                </VStack>
+            </View>
+        </TouchableOpacity>
+    );
 
     return (
         <>
-        <Header title={"ALL TASK"} />
+            <Header title={"JADWAL"} />
             <View style={styles.container}>
                 <Text style={styles.heading}>Jadwal Aktivitas </Text>
                 <TextInput
@@ -147,31 +292,51 @@ const TaskScreen = () => {
                     </Text>
                 </TouchableOpacity>
                 <Button mt={10} title="Refresh" onPress={handleRefresh}>
-                    <Text style={{color: "white", fontSize: 20}}>Refresh</Text>
+                    <Text style={{ color: "white", fontSize: 20 }}>Refresh</Text>
                 </Button>
                 <Text style={{ color: "yellow", marginTop: 20, fontSize: 18 }}>
                     Aktivitas
                 </Text>
                 <View style={styles.taskview}>
                     <FlatList
-                        data={data.filter(task => !task.isComplete)}
-                        renderItem={(props) => renderItem({ ...props, completed: false })}
+                        data={data.filter((task) => !task.isComplete)}
+                        renderItem={renderMainItem}
                         keyExtractor={(item, index) => index.toString()}
                     />
                 </View>
-                <Text style={{ color: "yellow", marginTop: 20, fontSize: 18 }}>
-                    Riwayat
-                </Text>
-                <View style={styles.taskview}>
-                    <FlatList
-                        data={data.filter(task => task.isComplete)}
-                        renderItem={(props) => renderItem({ ...props, completed: true })}
-                        keyExtractor={(item, index) => index.toString()}
-                    />
-                </View>
-                {loading && (
-                    <ActivityIndicator size="large" color="yellow" style={styles.loader} />
-                )}
+                <TouchableOpacity
+                    style={styles.addButton}
+                    onPress={() => {
+                        console.log("Show History Modal button pressed");
+                        setModalVisible(true);
+                    }}
+                >
+                    <Text style={styles.addButtonText}>Show History Modal</Text>
+                </TouchableOpacity>
+
+                <Modal
+                    animationType="slide"
+                    transparent={true}
+                    visible={isModalVisible}
+                    onRequestClose={closeModal}
+                >
+                    <View style={styles.modalContainer}>
+                        <View style={styles.modalContent}>
+                            <Text style={styles.modalHeader}>History Tasks</Text>
+                            <FlatList
+                                data={data.filter((task) => task.isComplete)}
+                                renderItem={renderHistoryItem}
+                                keyExtractor={(item, index) => index.toString()}
+                            />
+                            <TouchableOpacity
+                                style={styles.modalCloseButton}
+                                onPress={closeModal}
+                            >
+                                <Text style={styles.modalCloseButtonText}>Close Modal</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </Modal>
             </View>
         </>
 
