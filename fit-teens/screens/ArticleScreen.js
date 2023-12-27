@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: 'bold',
     marginLeft: 15,
-    color: 'yellow', // Warna teks diubah menjadi kuning
+    color: 'yellow', 
     marginLeft: 15,
   },
 });
